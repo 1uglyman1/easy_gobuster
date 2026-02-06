@@ -27,68 +27,35 @@ jobs:
         run: |
           go install github.com/OJ/gobuster/v3@latest
           gobuster -h
-          # 定义基础配置
           URL_FILE="./url.txt"
           GOBUSTER_MODE="dir"
           WORDLIST="./dic.txt"
           OUTPUT_DIR="gobuster_results"
-
-          # 检查url.txt是否存在
           if [ ! -f "$URL_FILE" ]; then
               echo "错误：$URL_FILE 文件不存在！"
               exit 1
           fi
-          # 创建结果保存目录（如果不存在）
           mkdir -p "$OUTPUT_DIR"
           # 逐行读取URL文件
           LINE_NUM=0
           while IFS= read -r URL; do
-              # 跳过空行和以#开头的注释行
               if [[ -z "$URL" || "$URL" =~ ^# ]]; then
                   continue
               fi
               LINE_NUM=$((LINE_NUM + 1))
-              echo "========================================"
-              echo "开始处理第 $LINE_NUM 个URL: $URL"
-              echo "========================================"
-
-              # 生成安全的文件名（替换URL中的特殊字符）
               SAFE_URL=$(echo "$URL" | sed -e 's/[^a-zA-Z0-9]/_/g')
               OUTPUT_FILE="${OUTPUT_DIR}/${SAFE_URL}_gobuster.txt"
               mkdir OUTPUT_FILE
               ls -alh
-              # 运行gobuster并保存结果
-              # 核心命令：可根据需要调整gobuster参数（如超时、线程数等）
               gobuster "$GOBUSTER_MODE" \
                   -u "$URL" \
                   -w "$WORDLIST" \
                   -o "$OUTPUT_FILE" \
-                  -t 10 \          # 线程数，可根据服务器性能调整
-                  --timeout 10s    # 超时时间
-
-              # 检查gobuster执行是否成功
-              if [ $? -eq 0 ]; then
-                  echo "✅ 第 $LINE_NUM 个URL处理完成，结果保存至: $OUTPUT_FILE"
-              else
-                  echo "❌ 第 $LINE_NUM 个URL处理失败！"
-                  # 记录失败的URL到错误文件
-                  echo "$URL" >> "${OUTPUT_DIR}/failed_urls.txt"
-              fi
-
-              echo -e "\n"  # 空行分隔不同URL的输出
+                  -t 10 \
+                  --timeout 10s
 
           done < "$URL_FILE"
-
-          # 最终统计
-          echo "========================================"
-          echo "📊 所有URL处理完成！"
-          echo "✅ 成功处理: $LINE_NUM 个URL"
-          echo "📁 结果目录: $OUTPUT_DIR"
-          if [ -f "${OUTPUT_DIR}/failed_urls.txt" ]; then
-              FAILED_COUNT=$(wc -l < "${OUTPUT_DIR}/failed_urls.txt")
-              echo "❌ 失败数量: $FAILED_COUNT 个（详见 failed_urls.txt）"
-          fi
-          echo "========================================"
+          echo "================OK========================"
           ls -alh
       - name: Compress easy_gobuster directory
         run: |
