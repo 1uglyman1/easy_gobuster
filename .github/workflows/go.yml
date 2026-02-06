@@ -1,0 +1,50 @@
+name: easy_gobuster
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  scan-and-upload:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - name: Set up Go
+        uses: actions/setup-go@v4
+
+      - name: Install dependencies
+        run: |
+          
+          sudo apt install gobuster
+          pip install -r requirements.txt
+          pip install psutil
+          
+      - name: Run easy_gobuster
+        run: |
+          go install github.com/OJ/gobuster/v3@latest
+          gobuster -h
+
+      - name: Compress easy_gobuster directory
+        run: |
+          cd ..
+          ls -alh
+          tar -czvf easy_gobuster.tar.gz easy_gobuster
+          ls -alh
+          
+      - name: Upload compressed easy_gobuster
+        uses: actions/upload-artifact@v4
+        with:
+          name: easy_gobuster
+          path: easy_gobuster.tar.gz
+          if-no-files-found: error
+          retention-days: 7
+          compression-level: 6
+          overwrite: false
+          include-hidden-files: false
+    
