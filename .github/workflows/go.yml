@@ -53,7 +53,7 @@ jobs:
                   -o "$OUTPUT_FILE" \
                   -t 10 \
                   --timeout 10s \
-                  --exclude-status "$EXCLUDE_CODES"
+                  --status-codes-blacklist "$EXCLUDE_CODES"
                   
 
           done < "$URL_FILE"
