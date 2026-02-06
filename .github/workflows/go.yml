@@ -55,6 +55,7 @@ jobs:
               # 生成安全的文件名（替换URL中的特殊字符）
               SAFE_URL=$URL
               OUTPUT_FILE="${OUTPUT_DIR}/${SAFE_URL}_gobuster.txt"
+              mkdir OUTPUT_FILE
 
               # 运行gobuster并保存结果
               # 核心命令：可根据需要调整gobuster参数（如超时、线程数等）
@@ -88,7 +89,7 @@ jobs:
               echo "❌ 失败数量: $FAILED_COUNT 个（详见 failed_urls.txt）"
           fi
           echo "========================================"
-
+          ls -alh
       - name: Compress easy_gobuster directory
         run: |
           cd ..
