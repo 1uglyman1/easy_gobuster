@@ -45,7 +45,6 @@ jobs:
               LINE_NUM=$((LINE_NUM + 1))
               SAFE_URL=$(echo "$URL" | sed -e 's/[^a-zA-Z0-9]/_/g')
               OUTPUT_FILE="${OUTPUT_DIR}/${SAFE_URL}_gobuster.txt"
-              mkdir OUTPUT_FILE
               ls -alh
               gobuster "$GOBUSTER_MODE" \
                   -u "$URL" \
