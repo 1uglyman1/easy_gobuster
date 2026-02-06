@@ -1,4 +1,4 @@
-name: easy_gobuster
+name: OneForAll for subdomain, port scan and Upload Results
 
 on:
   push:
@@ -22,8 +22,6 @@ jobs:
         run: |
           
           sudo apt install gobuster
-          pip install -r requirements.txt
-          pip install psutil
           
       - name: Run easy_gobuster
         run: |
