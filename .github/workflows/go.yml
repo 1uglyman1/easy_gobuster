@@ -31,6 +31,7 @@ jobs:
           GOBUSTER_MODE="dir"
           WORDLIST="./dic.txt"
           OUTPUT_DIR="gobuster_results"
+          EXCLUDE_CODES="404,403,500"
           if [ ! -f "$URL_FILE" ]; then
               echo "错误：$URL_FILE 文件不存在！"
               exit 1
@@ -51,7 +52,10 @@ jobs:
                   -w "$WORDLIST" \
                   -o "$OUTPUT_FILE" \
                   -t 10 \
-                  --timeout 10s
+                  --timeout 10s \
+                  -e \
+                  --exclude-status "$EXCLUDE_CODES"
+                  
 
           done < "$URL_FILE"
           echo "================OK========================"
