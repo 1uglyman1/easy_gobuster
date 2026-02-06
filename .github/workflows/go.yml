@@ -30,7 +30,7 @@ jobs:
           # 定义基础配置
           URL_FILE="../../url.txt"
           GOBUSTER_MODE="dir"
-          WORDLIST="/usr/share/wordlists/dirb/common.txt"
+          WORDLIST="../../dic.txt"
           OUTPUT_DIR="gobuster_results"
 
           # 检查url.txt是否存在
